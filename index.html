@@ -310,9 +310,6 @@
         document.getElementById(product === 'other' ? 'otherProduct' : 'product').classList.add('error');
         hasError = true;
       }
-        document.getElementById('product').classList.add('error');
-        hasError = true;
-      }
 
       if (hasError) {
         alert("Please fill out all required fields correctly.");
@@ -339,7 +336,7 @@
         "*Storage:* " + gb + " GB";
 
       const waURL = "https://wa.me/7983624797?text=" + encodeURIComponent(message);
-      window.location.href = waURL;
+      GPOrderRecords.send(message);
     }
   </script>
 
@@ -379,7 +376,7 @@
   }
 </script>
 
-<script src="https://gamesplanet13.github.io/arcade-accessories-/ps2-style-footer.js?v=20261016-ps2-view"></script></body>
+<script src="https://gamesplanet13.github.io/arcade-accessories-/ps2-style-footer.js?v=20261016-ps2-view"></script><script src="https://gamesplanet13.github.io/arcade-accessories-/orders-config.js?v=20261022-orders"></script><script src="https://gamesplanet13.github.io/arcade-accessories-/unified-postal.js?v=20261022-orders"></script><script src="https://gamesplanet13.github.io/arcade-accessories-/order-records.js?v=20261022-orders"></script></body>
 </html>
 
 <script>
@@ -449,8 +446,8 @@
       "*Storage:* " + gb + " GB";
 
     const waURL = "https://wa.me/7983624797?text=" + encodeURIComponent(message);
-    window.location.href = waURL;
+    GPOrderRecords.send(message);
   }
 </script>
-</body>
+<script src="https://gamesplanet13.github.io/arcade-accessories-/orders-config.js?v=20261022-orders"></script><script src="https://gamesplanet13.github.io/arcade-accessories-/unified-postal.js?v=20261022-orders"></script><script src="https://gamesplanet13.github.io/arcade-accessories-/order-records.js?v=20261022-orders"></script></body>
 </html>
