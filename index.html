@@ -169,9 +169,16 @@
   </div>
 
   <script>
-    function gpCodRural(){const house=(document.getElementById("house")?.value||"").trim(),choice=document.getElementById("areaType")?.value||"auto",addr=document.getElementById("address")?.value||"";return !house||choice==="rural"||(choice==="auto"&&/village|rural|gaon|गांव|गाँव/i.test(addr));}
+    function gpCodRural(){
+  const selected=document.getElementById('postOffice')?.selectedOptions?.[0];
+  const branchType=String(selected?.dataset?.branchType||'').toLowerCase();
+  const branchName=String(selected?.value||'');
+  if(branchType.includes('branch')||branchType==='bo'||/\bB\.?\s*O\.?(?:$|\s)/i.test(branchName))return true;
+  const house=(document.getElementById("house")?.value||"").trim(),choice=document.getElementById("areaType")?.value||"auto",addr=document.getElementById("address")?.value||"";
+  return !house||choice==="rural"||(choice==="auto"&&/village|rural|gaon|गांव|गाँव/i.test(addr));
+}
     function gpSyncCodArea(){const rural=gpCodRural();document.querySelectorAll('button[onclick="payAdvance()"],button[onclick="sendOrderOnWhatsApp()"]').forEach(x=>{x.disabled=rural;x.style.opacity=rural?".5":""});const note=document.getElementById("ruralCodNote");if(note)note.style.display=rural?"block":"none";}
-    document.addEventListener("DOMContentLoaded",()=>{["house","address","areaType"].forEach(id=>document.getElementById(id)?.addEventListener(id==="areaType"?"change":"input",gpSyncCodArea));gpSyncCodArea();});
+    document.addEventListener("DOMContentLoaded",()=>{["house","address","areaType"].forEach(id=>document.getElementById(id)?.addEventListener(id==="areaType"?"change":"input",gpSyncCodArea));document.getElementById("postOffice")?.addEventListener("change",gpSyncCodArea);gpSyncCodArea();});
     async function lookupPincode() {
       const pincode = document.getElementById('pincode').value.trim();
       if (!pincode || pincode.length !== 6) return;
@@ -190,8 +197,10 @@
             const option = document.createElement('option');
             option.value = po.Name;
             option.textContent = po.Name;
+            option.dataset.branchType=String(po.BranchType||po.OfficeType||'');
             poSelect.appendChild(option);
           });
+          gpSyncCodArea();
         } else {
           alert("Pincode not found.");
         }
