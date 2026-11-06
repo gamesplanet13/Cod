@@ -143,6 +143,9 @@
       <label for="address">Address</label>
       <input type="text" id="address" />
     </div>
+    <div class="form-group"><label for="house">House number / मकान नंबर</label><input type="text" id="house" placeholder="Blank means Rural" /></div>
+    <div class="form-group"><label for="areaType">Delivery Area</label><select id="areaType"><option value="auto">Auto by house number / address</option><option value="rural">Rural</option><option value="urban">Urban (house number required)</option></select></div>
+    <div id="ruralCodNote" style="padding:9px;color:#8b1f1f">Rural delivery: COD unavailable. Use prepaid Post Office ₹100 or Speed Post ₹200.</div>
     <div class="form-group">
       <label for="landmark">Landmark</label>
       <input type="text" id="landmark" />
@@ -166,6 +169,9 @@
   </div>
 
   <script>
+    function gpCodRural(){const house=(document.getElementById("house")?.value||"").trim(),choice=document.getElementById("areaType")?.value||"auto",addr=document.getElementById("address")?.value||"";return !house||choice==="rural"||(choice==="auto"&&/village|rural|gaon|गांव|गाँव/i.test(addr));}
+    function gpSyncCodArea(){const rural=gpCodRural();document.querySelectorAll('button[onclick="payAdvance()"],button[onclick="sendOrderOnWhatsApp()"]').forEach(x=>{x.disabled=rural;x.style.opacity=rural?".5":""});const note=document.getElementById("ruralCodNote");if(note)note.style.display=rural?"block":"none";}
+    document.addEventListener("DOMContentLoaded",()=>{["house","address","areaType"].forEach(id=>document.getElementById(id)?.addEventListener(id==="areaType"?"change":"input",gpSyncCodArea));gpSyncCodArea();});
     async function lookupPincode() {
       const pincode = document.getElementById('pincode').value.trim();
       if (!pincode || pincode.length !== 6) return;
@@ -247,7 +253,7 @@
   </div>
 
   <script>
-    function payAdvance() {
+    function payAdvance() { if(gpCodRural()){alert("Rural address पर COD advance payment न करें; prepaid postal order चुनें।");return;}
       const upiLink = "upi://pay?pa=paytmqr5hyx5o@ptys&pn=GamesPlanet&am=500&cu=INR";
       window.location.href = upiLink;
     }
@@ -276,7 +282,7 @@
   
   
   <script>
-    function sendOrderOnWhatsApp() {
+    function sendOrderOnWhatsApp() { if(gpCodRural()){alert("Rural order COD नहीं होगा। केवल prepaid Post Office ₹100 या Speed Post ₹200 चुनें।");return;}
       const name = document.getElementById('name').value.trim();
       const mobile = document.getElementById('mobile').value.trim();
       const altMobile = document.getElementById('altMobile').value.trim();
@@ -326,7 +332,7 @@
         "*Mobile:* " + mobile + "\n" +
         "*Alt Mobile:* " + altMobile + "\n" +
         "*Email:* " + email + "\n" +
-        "*Address:* " + address + "\n" +
+        "*Address:* " + ((document.getElementById("house").value||"").trim()?document.getElementById("house").value.trim()+", ":"")+address + "\n" + "*Delivery Area:* Urban\n" +
         "*Landmark:* " + landmark + "\n" +
         "*Pincode:* " + pincode + "\n" +
         "*State:* " + state + "\n" +
@@ -380,7 +386,7 @@
 </html>
 
 <script>
-  function sendOrderOnWhatsApp() {
+  function sendOrderOnWhatsApp() { if(gpCodRural()){alert("Rural order COD नहीं होगा। केवल prepaid Post Office ₹100 या Speed Post ₹200 चुनें।");return;}
     const name = document.getElementById('name').value.trim();
     const mobile = document.getElementById('mobile').value.trim();
     const altMobile = document.getElementById('altMobile').value.trim();
@@ -436,7 +442,7 @@
       "*Mobile:* " + mobile + "\n" +
       "*Alt Mobile:* " + altMobile + "\n" +
       "*Email:* " + email + "\n" +
-      "*Address:* " + address + "\n" +
+      "*Address:* " + ((document.getElementById("house").value||"").trim()?document.getElementById("house").value.trim()+", ":"")+address + "\n" + "*Delivery Area:* Urban\n" +
       "*Landmark:* " + landmark + "\n" +
       "*Pincode:* " + pincode + "\n" +
       "*State:* " + state + "\n" +
