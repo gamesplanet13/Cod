@@ -406,7 +406,9 @@ function gpCodRural(){
   const field=document.getElementById(id);
   if(field)for(const event of ['input','change'])field.addEventListener(event,()=>{gpSyncCodArea();});
  });
-});</script></body>
+});</script><script>for(const kind of ['input','change'])document.addEventListener(kind,event=>{
+ if(['pincode','city','district','address','postoffice','postOffice','postofficeSelect','postofficeManual'].includes(event.target.id))queueMicrotask(()=>{gpSyncCodArea();});
+},true);</script></body>
 </html>
 
 <script>
@@ -484,5 +486,7 @@ function gpCodRural(){
   const field=document.getElementById(id);
   if(field)for(const event of ['input','change'])field.addEventListener(event,()=>{gpSyncCodArea();});
  });
-});</script></body>
+});</script><script>for(const kind of ['input','change'])document.addEventListener(kind,event=>{
+ if(['pincode','city','district','address','postoffice','postOffice','postofficeSelect','postofficeManual'].includes(event.target.id))queueMicrotask(()=>{gpSyncCodArea();});
+},true);</script></body>
 </html>
